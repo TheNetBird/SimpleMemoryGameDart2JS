@@ -1,5 +1,9 @@
+library simple_memory;
+
 import 'package:game_loop/game_loop_html.dart';
 import 'dart:html';
+
+part 'game/game.dart';
 
 CanvasElement canvas;
 CanvasRenderingContext2D context;
@@ -12,11 +16,13 @@ GameLoopHtml gameLoop = new GameLoopHtml(canvas);
 void main() {
   buildCanvas();
   
+  Game game = new Game();
+  
   gameLoop.onUpdate = ((gameLoop) {
-    //update logic here
+    game.update(gameLoop.dt);
   });
   gameLoop.onRender = ((gameLoop) {
-    //draw Logic here
+    game.draw();
   });
   gameLoop.start();
 }
