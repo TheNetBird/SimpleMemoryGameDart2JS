@@ -14,7 +14,7 @@ class Game {
   int enumStateFinished = 3;  // Reveal all cards, show score, offer new game
   
   Game() {
-    gameState = enumStateFinished;
+    gameState = enumStateMenu;
   }
   
   // to be run whenever player says to start a new game
@@ -35,8 +35,10 @@ class Game {
   void update(double dt) {
     switch (gameState) {
       case 0:  // Menu
-        
         // look for input selecting number of cards
+        // Easy button is between 275 -400, and 360 - 410
+        // Normal button is between 450 - 575 and 360 - 410
+        // Hard button is between 625 -750 and 360 - 410
         break;
       case 1:  // Preview
         // Announce READY?
@@ -49,9 +51,9 @@ class Game {
        
         break;
       case 3:  // Finished
-        // Show players Time, ask them if they'd like to play again?
-        // If they got a new high score, highlight this
+        // Check for button click
         // button is between 540-680 and 50 - 90
+        // If button clicked, Put game in state enumStateMenu
         break;
     }
   }
@@ -62,8 +64,8 @@ class Game {
     context.fillStyle ='grey';
     context.fillRect(0, 0, viewportWidth, viewportHeight);
    
-    // draw board
-    
+    // draw board?
+    // draw cards?
     
     
     // draw Hud
@@ -79,29 +81,42 @@ class Game {
     context.fillText("Flash Memory", 400, 40);
     
     
-    // draw cards
-    
-    
     if (gameState == enumStateMenu) {
       // Display Menu overtop the board
       // Menu includes explanation of the game
       // menu includes a couple options for difficulty
+      context.fillStyle = "rgb(100,100,100)";
+      context.fillRect(256, 192, 512, 250);
+      
+      context.fillStyle = 'green';
+      
+      drawButton(275, 360, 125, 50); // Easy
+      drawButton(450, 360, 125, 50); // Normal
+      drawButton(625, 360, 125, 50); // Hard
+      
+      context.font = "22px normal calibri";
+      context.fillStyle = "black";
+      context.fillText("Flash Memory is a simple Memory Game with a Twist", 266, 220);
+      context.fillText("At the start you are given a brief glimpse of all", 266, 250);
+      context.fillText("The Cards.  Use this to your advantage!", 266, 280);
+      
+      context.font = "26px Bold calibri";
+      context.fillText("Select Difficulty: ", 266, 320);
+      
+      context.fillText("Easy", 315, 390);
+      context.fillText("Normal", 475, 390);
+      context.fillText("Hard", 665, 390);
     } 
     
-    // Draw Button
-    context.fillStyle = 'green';
-    context.fillRect(540, 50, 140, 40);
-    context.strokeStyle = 'black';
-    context.beginPath();
-    context.moveTo(540,50);
-    context.lineTo(680, 50);
-    context.lineTo(680, 90);
-    context.lineTo(540, 90);
-    context.lineTo(540, 50);
-    context.stroke();
     
-    context.fillStyle = 'black';
     if (gameState == enumStateFinished) {
+    // Draw Button
+      context.fillStyle = 'green';
+      context.strokeStyle = 'black';
+      drawButton(540, 50, 140, 40);
+      
+      
+      context.fillStyle = 'black';
       context.font = '24px normal calibri';
       if (score > highScore) {
         context.fillText("A new High Score!", 300, 75);
@@ -111,5 +126,16 @@ class Game {
       context.font = '24px Bold calibri';
       context.fillText("Play Again?", 550, 75);
     }
+  }
+  
+  void drawButton(x, y, width, height) {
+    context.fillRect(x, y, width, height);
+    context.beginPath();
+    context.moveTo(x,y);
+    context.lineTo(x + width, y);
+    context.lineTo(x + width, y + height);
+    context.lineTo(x, y + height);
+    context.lineTo(x, y);
+    context.stroke();
   }
 }
