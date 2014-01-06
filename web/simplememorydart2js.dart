@@ -1,16 +1,31 @@
+import 'package:game_loop/game_loop_html.dart';
 import 'dart:html';
 
+CanvasElement canvas;
+CanvasRenderingContext2D context;
+
+int viewportWidth = 1024;
+int viewportHeight = 768;
+
+GameLoopHtml gameLoop = new GameLoopHtml(canvas);
+
 void main() {
-  querySelector("#sample_text_id")
-    ..text = "Click me!"
-    ..onClick.listen(reverseText);
+  buildCanvas();
+  
+  gameLoop.onUpdate = ((gameLoop) {
+    //update logic here
+  });
+  gameLoop.onRender = ((gameLoop) {
+    //draw Logic here
+  });
+  gameLoop.start();
 }
 
-void reverseText(MouseEvent event) {
-  var text = querySelector("#sample_text_id").text;
-  var buffer = new StringBuffer();
-  for (int i = text.length - 1; i >= 0; i--) {
-    buffer.write(text[i]);
-  }
-  querySelector("#sample_text_id").text = buffer.toString();
+void buildCanvas() {
+  canvas = query('canvas');
+  canvas.width = viewportWidth;
+  canvas.height = viewportHeight;
+  context = canvas.getContext('2d');
 }
+
+
