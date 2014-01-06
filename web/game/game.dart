@@ -21,39 +21,70 @@ class Game {
   void startGame() {
     //initialize all the cards
     
-    
-    // reveal cards to player for set amount of time
-    // flip cards over
-    // start timer
+    gameState = enumStatePreview;
   }
   
   void finishGame() {
-    // do high Score check, should it be updated?
-    // move into state where player is asked do they want to play again?
+    gameState = enumStateFinished;
+    
+    // pause the score timer 
   }
   
   void update(double dt) {
+    bool click = gameLoop.mouse.isDown(Mouse.LEFT);
+    int x = gameLoop.mouse.clampX;
+    int y = gameLoop.mouse.clampY;
+    
     switch (gameState) {
       case 0:  // Menu
-        // look for input selecting number of cards
-        // Easy button is between 275 -400, and 360 - 410
-        // Normal button is between 450 - 575 and 360 - 410
-        // Hard button is between 625 -750 and 360 - 410
+        if (click) {
+          if (x < 400 && x > 275 && 
+              y < 410 && y > 360) {
+            print("Easy Game");
+            startGame();
+          }
+          
+          if (x < 575 && x > 450 &&
+              y < 410 && y > 360) {
+            print("Normal Game");
+            startGame();
+          }
+          
+          if (x < 750 && x > 625 &&
+              y < 410 && y > 360) {
+            print("Hard Game");
+            startGame();
+          }
+        }
         break;
       case 1:  // Preview
         // Announce READY?
         // Announce GO!
         // Reveal cards for a set amount of time
         // Hide cards, and start timer.  Then switch to enumStatePlaying
+        
+        //temp Line
+        gameState = enumStatePlaying;
         break;
       case 2: // Playing
         // check for input from mouse to select cards
-       
+        
+        //temp change for testing
+        finishGame();
         break;
       case 3:  // Finished
-        // Check for button click
-        // button is between 540-680 and 50 - 90
-        // If button clicked, Put game in state enumStateMenu
+        
+        if (click && 
+            x < 680 && x > 540 &&
+            y < 90 && y > 50) {
+          print("New Game");
+          
+          if (score > highScore) {
+            highScore = score;
+          }
+          score = 0;
+          gameState = enumStateMenu;
+        }
         break;
     }
   }
@@ -82,9 +113,6 @@ class Game {
     
     
     if (gameState == enumStateMenu) {
-      // Display Menu overtop the board
-      // Menu includes explanation of the game
-      // menu includes a couple options for difficulty
       context.fillStyle = "rgb(100,100,100)";
       context.fillRect(256, 192, 512, 250);
       
@@ -96,9 +124,9 @@ class Game {
       
       context.font = "22px normal calibri";
       context.fillStyle = "black";
-      context.fillText("Flash Memory is a simple Memory Game with a Twist", 266, 220);
-      context.fillText("At the start you are given a brief glimpse of all", 266, 250);
-      context.fillText("The Cards.  Use this to your advantage!", 266, 280);
+      context.fillText("Flash Memory is a simple Memory Game with a Twist.", 266, 220);
+      context.fillText("At the start you are given a brief glimpse of all the cards.", 266, 250);
+      context.fillText("Use this to your advantage!", 266, 280);
       
       context.font = "26px Bold calibri";
       context.fillText("Select Difficulty: ", 266, 320);
@@ -110,11 +138,9 @@ class Game {
     
     
     if (gameState == enumStateFinished) {
-    // Draw Button
       context.fillStyle = 'green';
       context.strokeStyle = 'black';
       drawButton(540, 50, 140, 40);
-      
       
       context.fillStyle = 'black';
       context.font = '24px normal calibri';
