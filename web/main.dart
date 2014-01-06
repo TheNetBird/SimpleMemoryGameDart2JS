@@ -17,6 +17,7 @@ void main() {
   buildCanvas();
   
   Game game = new Game();
+  gameLoop.pointerLock.lockOnClick = false;
   
   gameLoop.onUpdate = ((gameLoop) {
     game.update(gameLoop.dt);

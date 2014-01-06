@@ -6,7 +6,7 @@ class Game {
   int highScore = 0;
   int currentTime = 0;
   
-  int gameState = 0;
+  int gameState;
   
   int enumStateMenu = 0;  // Menu on top of middle area of game offering game types
   int enumStatePreview = 1;  // cards revealed, player action does nothing
@@ -14,7 +14,7 @@ class Game {
   int enumStateFinished = 3;  // Reveal all cards, show score, offer new game
   
   Game() {
-    gameState = enumStateMenu;
+    gameState = enumStateFinished;
   }
   
   // to be run whenever player says to start a new game
@@ -51,6 +51,7 @@ class Game {
       case 3:  // Finished
         // Show players Time, ask them if they'd like to play again?
         // If they got a new high score, highlight this
+        // button is between 540-680 and 50 - 90
         break;
     }
   }
@@ -67,12 +68,12 @@ class Game {
     
     // draw Hud
     context.fillStyle = 'black';
-    context.font = '20px normal calibri';
+    context.font = '24px normal calibri';
     
-    context.fillText("Current Score: ${score}", 20, 30);
-    context.fillText("High Score: ${highScore}", 200, 30);
+    context.fillText("Current Score: ${score}", 20, 35);
+    context.fillText("High Score: ${highScore}", 200, 35);
     
-    context.fillText("Time: ${currentTime}", 770, 30);
+    context.fillText("Time: ${currentTime}", 770, 35);
     
     context.font = '40px bold calibri';
     context.fillText("Flash Memory", 400, 40);
@@ -83,8 +84,32 @@ class Game {
     
     if (gameState == enumStateMenu) {
       // Display Menu overtop the board
-      //  Menu includes explanation of the game
+      // Menu includes explanation of the game
       // menu includes a couple options for difficulty
+    } 
+    
+    // Draw Button
+    context.fillStyle = 'green';
+    context.fillRect(540, 50, 140, 40);
+    context.strokeStyle = 'black';
+    context.beginPath();
+    context.moveTo(540,50);
+    context.lineTo(680, 50);
+    context.lineTo(680, 90);
+    context.lineTo(540, 90);
+    context.lineTo(540, 50);
+    context.stroke();
+    
+    context.fillStyle = 'black';
+    if (gameState == enumStateFinished) {
+      context.font = '24px normal calibri';
+      if (score > highScore) {
+        context.fillText("A new High Score!", 300, 75);
+      } else {
+        context.fillText("Not a new High Score", 300, 75);
+      }
+      context.font = '24px Bold calibri';
+      context.fillText("Play Again?", 550, 75);
     }
   }
 }
