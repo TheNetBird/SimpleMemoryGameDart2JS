@@ -2,6 +2,7 @@ library simple_memory;
 
 import 'package:game_loop/game_loop_html.dart';
 import 'dart:html';
+import 'dart:core';
 
 part 'game/game.dart';
 

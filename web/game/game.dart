@@ -4,7 +4,7 @@ part of simple_memory;
 class Game {
   int score =  0;
   int highScore = 0;
-  int currentTime = 0;
+  StopWatch currentTime = new StopWatch();
   
   int gameState;
   
@@ -63,14 +63,15 @@ class Game {
         // Reveal cards for a set amount of time
         // Hide cards, and start timer.  Then switch to enumStatePlaying
         
-        //temp Line
-        gameState = enumStatePlaying;
+        
+        gameState = enumStatePlaying;  //TODO remove this
         break;
       case 2: // Playing
         // check for input from mouse to select cards
         
-        //temp change for testing
-        finishGame();
+        if (true) { //TODO change this to win condition
+          finishGame();  
+        }
         break;
       case 3:  // Finished
         
@@ -92,7 +93,7 @@ class Game {
   void draw() {
     
     // draw background
-    context.fillStyle ='grey';
+    context.fillStyle = 'grey';
     context.fillRect(0, 0, viewportWidth, viewportHeight);
    
     // draw board?
