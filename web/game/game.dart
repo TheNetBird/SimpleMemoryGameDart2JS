@@ -4,7 +4,7 @@ part of simple_memory;
 class Game {
   int score =  0;
   int highScore = 0;
-  StopWatch currentTime = new StopWatch();
+  Stopwatch currentTime = new Stopwatch();
   
   int gameState;
   
@@ -13,21 +13,37 @@ class Game {
   int enumStatePlaying = 2;  //cards hidden, player can select
   int enumStateFinished = 3;  // Reveal all cards, show score, offer new game
   
+  int previewState;
+  
+  int enumPreviewReady = 0;
+  int enumPreviewGo = 1;
+  int enumPreviewReveal = 2;
+  
+  int matchesLeft = 0;
+  
   Game() {
     gameState = enumStateMenu;
   }
   
   // to be run whenever player says to start a new game
   void startGame() {
-    //initialize all the cards
+    //TODO initialize all the cards
     
     gameState = enumStatePreview;
+    previewState = enumPreviewReady;
+    var timer1 = gameLoop.addTimer((timer) => previewState = enumPreviewGo, 2.0);
+    var timer2 = gameLoop.addTimer((timer) => previewState = enumPreviewReveal, 2.75);
+    var timer3 = gameLoop.addTimer((timer) => startPlaying(), 6.75);
+  }
+  
+  void startPlaying() {
+    gameState = enumStatePlaying;
+    currentTime.start();
   }
   
   void finishGame() {
     gameState = enumStateFinished;
-    
-    // pause the score timer 
+    currentTime.stop();
   }
   
   void update(double dt) {
@@ -40,34 +56,28 @@ class Game {
         if (click) {
           if (x < 400 && x > 275 && 
               y < 410 && y > 360) {
-            print("Easy Game");
+            score = 20000;
             startGame();
           }
           
           if (x < 575 && x > 450 &&
               y < 410 && y > 360) {
-            print("Normal Game");
+            score = 40000;
             startGame();
           }
           
           if (x < 750 && x > 625 &&
               y < 410 && y > 360) {
-            print("Hard Game");
+            score = 60000;
             startGame();
           }
         }
         break;
       case 1:  // Preview
-        // Announce READY?
-        // Announce GO!
-        // Reveal cards for a set amount of time
-        // Hide cards, and start timer.  Then switch to enumStatePlaying
-        
-        
-        gameState = enumStatePlaying;  //TODO remove this
+          // No updates, its all draws and a concurrent timer
         break;
       case 2: // Playing
-        // check for input from mouse to select cards
+        //TODO   check for input from mouse to select cards
         
         if (true) { //TODO change this to win condition
           finishGame();  
@@ -77,9 +87,7 @@ class Game {
         
         if (click && 
             x < 680 && x > 540 &&
-            y < 90 && y > 50) {
-          print("New Game");
-          
+            y < 90 && y > 50) {      
           if (score > highScore) {
             highScore = score;
           }
@@ -96,18 +104,32 @@ class Game {
     context.fillStyle = 'grey';
     context.fillRect(0, 0, viewportWidth, viewportHeight);
    
-    // draw board?
-    // draw cards?
-    
+    //TODO   draw board?
+    //TODO   draw cards?
+    if (gameState == enumStatePreview) {
+      context.font = '80px normal calibri';
+      context.fillStyle = 'black';
+      if (previewState == enumPreviewReady){
+        context.fillText("READY?", 350, 400);
+      }
+      if (previewState == enumPreviewGo){
+        context.fillText("GO!", 425, 400);
+      }
+      if (previewState == enumPreviewReveal) {
+        //TODO   Reveal cards
+        context.font = '20px normal calibri';
+        context.fillText("Revealing Cards", 425, 400);
+      }
+    }
     
     // draw Hud
     context.fillStyle = 'black';
     context.font = '24px normal calibri';
     
-    context.fillText("Current Score: ${score}", 20, 35);
-    context.fillText("High Score: ${highScore}", 200, 35);
+    context.fillText("Current Score: ${score - currentTime.elapsed.inMilliseconds}", 20, 35);
+    context.fillText("High Score: ${highScore}", 240, 35);
     
-    context.fillText("Time: ${currentTime}", 770, 35);
+    context.fillText("Time: ${currentTime.elapsed.inSeconds}", 770, 35);
     
     context.font = '40px bold calibri';
     context.fillText("Flash Memory", 400, 40);
