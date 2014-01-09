@@ -5,6 +5,8 @@ import 'dart:html';
 import 'dart:core';
 
 part 'game/game.dart';
+part 'game/board.dart';
+part 'game/card.dart';
 
 CanvasElement canvas;
 CanvasRenderingContext2D context;
