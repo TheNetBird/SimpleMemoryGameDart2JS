@@ -76,10 +76,12 @@ class Board {
       // initial card pick
       card.revealed = true;
       previousSelection = card;
+      card.selected = true;
     } else if (previousSelection.identifier == card.identifier) {
       // Successful Match
       previousSelection.selected = false;
       previousSelection.matchMade = true;
+      previousSelection = null;
       card.matchMade = true;
       Game.matchesLeft--;
     } else {
