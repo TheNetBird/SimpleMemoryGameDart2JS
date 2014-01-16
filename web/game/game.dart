@@ -21,22 +21,40 @@ class Game {
   
   int matchesLeft = 0;
   
+  static final double roomForHud = 50.0;
+  Board board;
+  
+  
+  static double enumEasyGame = 16.0;
+  static double enumMediumGame  = 28.0;
+  static double enumHardGame = 40.0;
+  
+  double gameType = enumEasyGame;
+  
+  
   Game() {
     gameState = enumStateMenu;
+    board = new Board(enumMediumGame);
   }
   
   // to be run whenever player says to start a new game
   void startGame() {
-    //TODO initialize all the cards
+    board = new Board(gameType);
     
     gameState = enumStatePreview;
     previewState = enumPreviewReady;
     var timer1 = gameLoop.addTimer((timer) => previewState = enumPreviewGo, 2.0);
-    var timer2 = gameLoop.addTimer((timer) => previewState = enumPreviewReveal, 2.75);
+    var timer2 = gameLoop.addTimer((timer) => previewReveal(), 2.75);
     var timer3 = gameLoop.addTimer((timer) => startPlaying(), 6.75);
   }
   
+  void previewReveal() {
+    board.revealAll();
+    previewState = enumPreviewReveal;
+  }
+  
   void startPlaying() {
+    board.hideAll();
     gameState = enumStatePlaying;
     currentTime.start();
   }
@@ -56,18 +74,21 @@ class Game {
         if (click) {
           if (x < 400 && x > 275 && 
               y < 410 && y > 360) {
+            gameType = enumEasyGame;
             score = 20000;
             startGame();
           }
           
           if (x < 575 && x > 450 &&
               y < 410 && y > 360) {
+            gameType = enumMediumGame;
             score = 40000;
             startGame();
           }
           
           if (x < 750 && x > 625 &&
               y < 410 && y > 360) {
+            gameType = enumHardGame;
             score = 60000;
             startGame();
           }
@@ -79,7 +100,7 @@ class Game {
       case 2: // Playing
         //TODO   check for input from mouse to select cards
         
-        if (true) { //TODO change this to win condition
+        if (board.matchesRequired == 0) {
           finishGame();  
         }
         break;
@@ -104,8 +125,8 @@ class Game {
     context.fillStyle = 'grey';
     context.fillRect(0, 0, viewportWidth, viewportHeight);
    
-    //TODO   draw board?
-    //TODO   draw cards?
+    board.draw();
+    
     if (gameState == enumStatePreview) {
       context.font = '80px normal calibri';
       context.fillStyle = 'black';
@@ -116,9 +137,8 @@ class Game {
         context.fillText("GO!", 425, 400);
       }
       if (previewState == enumPreviewReveal) {
-        //TODO   Reveal cards
         context.font = '20px normal calibri';
-        context.fillText("Revealing Cards", 425, 400);
+        context.fillText("Revealing Cards", 425, 400);  //TODO Remove this
       }
     }
     
