@@ -19,7 +19,7 @@ class Game {
   int enumPreviewGo = 1;
   int enumPreviewReveal = 2;
   
-  int matchesLeft = 0;
+  static int matchesLeft = 0;
   
   static final double roomForHud = 50.0;
   Board board;
@@ -65,7 +65,7 @@ class Game {
   }
   
   void update(double dt) {
-    bool click = gameLoop.mouse.isDown(Mouse.LEFT);
+    bool click = gameLoop.mouse.pressed(Mouse.LEFT);
     int x = gameLoop.mouse.clampX;
     int y = gameLoop.mouse.clampY;
     
@@ -98,7 +98,9 @@ class Game {
           // No updates, its all draws and a concurrent timer
         break;
       case 2: // Playing
-        //TODO   check for input from mouse to select cards
+       if (click) {
+         board.click(x,y);
+       }
         
         if (board.matchesRequired == 0) {
           finishGame();  

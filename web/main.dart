@@ -15,6 +15,7 @@ int viewportWidth = 1024;
 int viewportHeight = 768;
 
 GameLoopHtml gameLoop = new GameLoopHtml(canvas);
+int _lastFrame;
 
 void main() {
   buildCanvas();
@@ -23,6 +24,11 @@ void main() {
   gameLoop.pointerLock.lockOnClick = false;
   
   gameLoop.onUpdate = ((gameLoop) {
+    if (_lastFrame == gameLoop.frame) {
+      return;
+    } else {
+      _lastFrame = gameLoop.frame;
+    }
     game.update(gameLoop.dt);
   });
   gameLoop.onRender = ((gameLoop) {
