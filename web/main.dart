@@ -3,11 +3,13 @@ library simple_memory;
 import 'package:game_loop/game_loop_html.dart';
 import 'dart:html';
 import 'dart:core';
+import 'dart:math';
 
 part 'game/game.dart';
 part 'game/board.dart';
 part 'game/card.dart';
-part 'game/identifer.dart';
+part 'game/identifier.dart';
+part 'game/match_list.dart';
 
 CanvasElement canvas;
 CanvasRenderingContext2D context;

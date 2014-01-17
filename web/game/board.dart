@@ -15,6 +15,11 @@ class Board {
   }
   
   void createBoard() {
+    MatchList mList = new MatchList();
+    //TODO make code here so that an identifier is retrieved
+    // and then used for two different cards before getting a new
+    // identifier
+    
     double totalGapW = (viewportWidth - Card.cardWidth * cardsPerRow);
     double singleGapW = totalGapW / (cardsPerRow + 1);
     
