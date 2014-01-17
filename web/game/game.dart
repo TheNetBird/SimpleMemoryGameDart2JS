@@ -100,8 +100,10 @@ class Game {
        if (click) {
          board.click(x,y);
        }
-        
         if (board.matchesRequired == 0) {
+          if (score > highScore) {
+            highScore = score - currentTime.elapsed.inMilliseconds;
+          }
           finishGame();  
         }
         break;
@@ -110,9 +112,6 @@ class Game {
         if (click && 
             x < 680 && x > 540 &&
             y < 90 && y > 50) {      
-          if (score > highScore) {
-            highScore = score;
-          }
           score = 0;
           gameState = enumStateMenu;
         }
@@ -148,9 +147,9 @@ class Game {
     context.font = '24px normal calibri';
     
     context.fillText("Current Score: ${score - currentTime.elapsed.inMilliseconds}", 20, 35);
-    context.fillText("High Score: ${highScore}", 240, 35);
+    context.fillText("High Score: ${highScore}", 700, 35);
     
-    context.fillText("Time: ${currentTime.elapsed.inSeconds}", 770, 35);
+    context.fillText("Time: ${currentTime.elapsed.inSeconds}", 240, 35);
     
     context.font = '40px bold calibri';
     context.fillText("Flash Memory", 400, 40);
