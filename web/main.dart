@@ -7,6 +7,7 @@ import 'dart:core';
 part 'game/game.dart';
 part 'game/board.dart';
 part 'game/card.dart';
+part 'game/identifer.dart';
 
 CanvasElement canvas;
 CanvasRenderingContext2D context;

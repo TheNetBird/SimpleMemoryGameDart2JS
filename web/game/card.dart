@@ -11,12 +11,12 @@ class Card {
   double x;
   double y;
   
-  int identifier;
+  Identifier identifier;
   bool matchMade = false;
   bool selected = false;
   
   Card(int identifier, double x, double y){
-    this.identifier = identifier;
+    this.identifier = new Identifier(identifier);
     this.x = x;
     this.y = y;
   }
@@ -56,6 +56,6 @@ class Card {
   void drawIdentifier(double x, double y){
     context.fillStyle = 'black';
     context.font = '32px normal calibri';
-    context.fillText(identifier.toString(), x + cardWidth/2, y + cardHeight/2);
+    context.fillText(identifier.number.toString(), x + cardWidth/2, y + cardHeight/2);
   }
 }
