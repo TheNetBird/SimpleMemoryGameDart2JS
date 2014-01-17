@@ -20,18 +20,29 @@ class Board {
     // and then used for two different cards before getting a new
     // identifier
     
+    
     double totalGapW = (viewportWidth - Card.cardWidth * cardsPerRow);
     double singleGapW = totalGapW / (cardsPerRow + 1);
     
     double totalGapH = (viewportHeight - Card.cardHeight * cardsPerColumn - Game.roomForHud);
     double singleGapH = totalGapH / (cardsPerColumn + 1);
     
+    Identifier previousIdentifier = null;
+    Identifier newIdentifier;
     for (int i = 0; i < cardsPerRow; i++) {
       cards.add(new List<Card>());
       for (int j = 0; j < cardsPerColumn; j++) {
-        cards[i].add(new Card(i + j, 
+        if (null == previousIdentifier) {
+          newIdentifier = mList.getIdentifier();
+          previousIdentifier = newIdentifier;
+        } else {
+          newIdentifier = previousIdentifier;
+          previousIdentifier = null; // its been used 2x, back to being blank
+        }
+        cards[i].add(new Card(newIdentifier, 
             (i + 1) * singleGapW + i * Card.cardWidth, 
             (j + 1) * singleGapH + j * Card.cardHeight + Game.roomForHud ));
+        newIdentifier = null; 
       }
     }
   }

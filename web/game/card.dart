@@ -15,8 +15,8 @@ class Card {
   bool matchMade = false;
   bool selected = false;
   
-  Card(int identifier, double x, double y){
-    this.identifier = new Identifier(identifier);
+  Card(Identifier identifier, double x, double y){
+    this.identifier = identifier;
     this.x = x;
     this.y = y;
   }
