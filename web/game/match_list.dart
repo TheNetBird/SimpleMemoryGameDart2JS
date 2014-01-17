@@ -16,11 +16,6 @@ class MatchList{
     return answer;
   }
   
- // resestList() {
-  //  availableIList = new List<Identifier>();
- //   createIdentifiers();
- // }
-  
   createIdentifiers() {
     availableIList.add(new Identifier(1));
     availableIList.add(new Identifier(2));
