@@ -1,5 +1,8 @@
 part of simple_memory;
 
+/*
+ * This class is where all the data on available identities is stored
+ */
 class MatchList{
   
   List<Identifier> availableIList = new List<Identifier>();

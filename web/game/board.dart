@@ -6,7 +6,8 @@ class Board {
   final double cardsPerColumn = 4.0;
   double cardsPerRow;
   double matchesRequired;
-  Card previousSelection = null;
+  Card previousIDSelection = null;
+  
   
   Board(double numCards) {
     matchesRequired = numCards/2;
@@ -15,14 +16,22 @@ class Board {
   }
   
   void createBoard() {
+    List<Card> identifiedCards = identifyCards();
+    addIdentifiedCardsToBoard(identifiedCards);
+    assignPixelLocations();
+  }
+  
+  /*
+   * Cards must be given an identity.  Each Identity is given to 
+   * two different cards
+   */
+  identifyCards() {
     MatchList mList = new MatchList(); 
-    
     List<Card> identifiedCards = new List<Card>();
-    
     Identifier previousIdentifier = null;
     Identifier newIdentifier;
+    
     for (int i = 0; i < cardsPerRow * cardsPerColumn; i++) {
-
       if (null == previousIdentifier) {
         newIdentifier = mList.getIdentifier();
         previousIdentifier = newIdentifier;
@@ -30,21 +39,22 @@ class Board {
         newIdentifier = previousIdentifier;
         previousIdentifier = null; // its been used 2x, back to being blank
       }
-      identifiedCards.add(new Card(newIdentifier, 0.0, 0.0));
-      //cards[i].add(new Card(newIdentifier, 0.0, 0.0));
+      identifiedCards.add(new Card(newIdentifier));
       newIdentifier = null; 
     }
-    addIdentifiedCardsToBoard(identifiedCards);
-    assignLocations();
+    return identifiedCards;
   }
   
   addIdentifiedCardsToBoard(List<Card> identifiedCards) {
     var rng = new Random();
-    List<int> availableSpotsList = new List<int>();
     
+    // Modifiable list that contains all the possible board 
+    // locations, as each it will be removed
+    List<int> availableSpotsList = new List<int>();
     for (int i = 0; i < cardsPerRow * cardsPerColumn; i++) {
       availableSpotsList.add(i+1);
     }
+    
     // Create the board of the right size
     cards = new List<List<Card>>(cardsPerColumn.toInt());
     for (int i = 0; i < cards.length; i++){
@@ -53,19 +63,24 @@ class Board {
     
     
     for (int i = 0; i < identifiedCards.length; i++) {
+      // Pick a random location for the card
       int pickedNumber = rng.nextInt(availableSpotsList.length);
       int cardLocation = availableSpotsList[pickedNumber];
       availableSpotsList.removeAt(pickedNumber);
       
-      cardLocation--;
+      // place the card in the board array at the picked location
+      cardLocation--; // subtract one because array starts at zero
       int cardCol = cardLocation % cardsPerRow.toInt();
       int cardRow = (cardLocation / cardsPerRow.toInt()).floor();
       cards[cardRow][cardCol] = identifiedCards[i];
-      
     }
   }
   
-  assignLocations() {
+  /*
+   * The cards already know what position they are relative to 
+   * other cards, this assigns the location for drawing
+   */
+  assignPixelLocations() {
     double totalGapW = (viewportWidth - Card.cardWidth * cardsPerRow);
     double singleGapW = totalGapW / (cardsPerRow + 1);
     
@@ -105,6 +120,9 @@ class Board {
     }
   }
   
+  /*
+   *  Determines if the player has selected a card
+   */
   void click(int x, int y) {
     for (int i = 0; i < cardsPerColumn; i++) {
       for (int j = 0; j < cardsPerRow; j++) {
@@ -121,23 +139,23 @@ class Board {
   }
   
   newSelection(Card card) {
-    if (previousSelection == null) {
+    if (previousIDSelection == null) {
       // initial card pick
       card.revealed = true;
-      previousSelection = card;
+      previousIDSelection = card;
       card.selected = true;
-    } else if (previousSelection.identifier == card.identifier) {
+    } else if (previousIDSelection.identifier == card.identifier) {
       // Successful Match
-      previousSelection.selected = false;
-      previousSelection.matchMade = true;
-      previousSelection = null;
+      previousIDSelection.selected = false;
+      previousIDSelection.matchMade = true;
+      previousIDSelection = null;
       card.matchMade = true;
-      Game.matchesLeft--;
+      matchesRequired--;
     } else {
       // UnSuccessful Match
-      previousSelection.selected = false;
-      previousSelection.revealed = false;
-      previousSelection = null;
+      previousIDSelection.selected = false;
+      previousIDSelection.revealed = false;
+      previousIDSelection = null;
     }
   }
 }

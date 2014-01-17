@@ -1,23 +1,22 @@
 part of simple_memory;
 
+/*
+ * Contains card state
+ */
 class Card {
-  // Hold whether or not it is currently revealed
-  // Holds directions to draw itself
   bool revealed = false;
   static final double cardWidth = 80.0;
   static final double cardHeight = 100.0;
   
-  double x;
-  double y;
+  double x = 0.0;
+  double y = 0.0;
   
   Identifier identifier;
   bool matchMade = false;
   bool selected = false;
   
-  Card(Identifier identifier, double x, double y){
+  Card(Identifier identifier){
     this.identifier = identifier;
-    this.x = x;
-    this.y = y;
   }
   
   void draw() {
@@ -44,6 +43,9 @@ class Card {
     }
   }
   
+  /*
+   * Returns true if the card is selectable.
+   */
   bool select() {
     if (!matchMade && !selected) {
       return true;

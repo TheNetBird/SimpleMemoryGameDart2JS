@@ -19,7 +19,6 @@ class Game {
   int enumPreviewGo = 1;
   int enumPreviewReveal = 2;
   
-  static int matchesLeft = 0;
   
   static final double roomForHud = 50.0;
   Board board;
