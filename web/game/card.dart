@@ -59,4 +59,13 @@ class Card {
     context.font = '32px normal calibri';
     context.fillText(identifier.number.toString(), x + cardWidth/2, y + cardHeight/2);
   }
+  
+  void tempReveal() {
+    this.revealed = true;
+    gameLoop.addTimer((timedHide) => hide(), 0.75);
+  }
+  
+  void hide() {
+    this.revealed = false;
+  }
 }

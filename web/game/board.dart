@@ -153,8 +153,9 @@ class Board {
       matchesRequired--;
     } else {
       // UnSuccessful Match
+      card.tempReveal();
+      previousIDSelection.tempReveal();
       previousIDSelection.selected = false;
-      previousIDSelection.revealed = false;
       previousIDSelection = null;
     }
   }
