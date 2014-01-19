@@ -2,8 +2,9 @@ part of simple_memory;
 
 
 class Game {
-  int score =  0;
+  int startingScore =  0;
   int highScore = 0;
+  int score = 0;
   Stopwatch currentTime = new Stopwatch();
   
   int gameState;
@@ -74,21 +75,21 @@ class Game {
           if (x < 400 && x > 275 && 
               y < 410 && y > 360) {
             gameType = enumEasyGame;
-            score = 20000;
+            startingScore = 20000;
             startGame();
           }
           
           if (x < 575 && x > 450 &&
               y < 410 && y > 360) {
             gameType = enumMediumGame;
-            score = 40000;
+            startingScore = 40000;
             startGame();
           }
           
           if (x < 750 && x > 625 &&
               y < 410 && y > 360) {
             gameType = enumHardGame;
-            score = 60000;
+            startingScore = 60000;
             startGame();
           }
         }
@@ -100,9 +101,10 @@ class Game {
        if (click) {
          board.click(x,y);
        }
+       score = (startingScore - currentTime.elapsed.inMilliseconds * 0.25).toInt();
         if (board.matchesRequired == 0) {
           if (score > highScore) {
-            highScore = score - currentTime.elapsed.inMilliseconds;
+            highScore = score;
           }
           finishGame();  
         }
@@ -113,6 +115,8 @@ class Game {
             x < 680 && x > 540 &&
             y < 90 && y > 50) {      
           score = 0;
+          startingScore = 0;
+          currentTime.reset();
           gameState = enumStateMenu;
         }
         break;
@@ -145,8 +149,7 @@ class Game {
     // draw Hud
     context.fillStyle = 'black';
     context.font = '24px normal calibri';
-    
-    context.fillText("Current Score: ${score - currentTime.elapsed.inMilliseconds}", 20, 35);
+    context.fillText("Current Score: ${score}", 20, 35);
     context.fillText("High Score: ${highScore}", 700, 35);
     
     context.fillText("Time: ${currentTime.elapsed.inSeconds}", 240, 35);
@@ -187,6 +190,7 @@ class Game {
       
       context.fillStyle = 'black';
       context.font = '24px normal calibri';
+      
       if (score > highScore) {
         context.fillText("A new High Score!", 300, 75);
       } else {
